@@ -1,3 +1,3 @@
 # React app for home crypto analytic stuff.
 
-Created just by CRA. =)
+Created just by CRA =)

@@ -3,6 +3,7 @@ import {Container, Grid, TextField, Button, Divider} from '@material-ui/core'
 import {makeStyles} from '@material-ui/core/styles'
 import CryptoCardList from './CryptoCardList'
 import CryptoChart from './CryptoChart'
+import CryptoApi from "../services/http";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -18,14 +19,10 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-const getUrlByCryptoName = cryptoName => {
-    const base = 'https://min-api.cryptocompare.com'
-    return `${base}/data/price?fsym=${cryptoName}&tsyms=USD,EUR`
-}
-
 const Main = () => {
     const classes = useStyles()
     const [selectedCrypto, setSelectedCrypto] = React.useState(null)
+    const [history, setHistory] = React.useState({})
     const [cryptos, setCryptos] = React.useState([])
     const [inputText, setInputText] = React.useState('')
     const [isLoading, setIsLoading] = React.useState(false)
@@ -39,15 +36,14 @@ const Main = () => {
             cryptos.find(crypto => crypto.name.toUpperCase() === cryptoName.toUpperCase())
         ) return setIsLoading(false)
 
-        const apiLink = getUrlByCryptoName(cryptoName)
-        const response = await fetch(apiLink)
-        const crypto = await response.json()
+        const crypto = await CryptoApi.getRateByCryptoName(cryptoName)
 
         if (crypto.Response === 'Error') return setIsLoading(false)
 
         const newCrypto = {
             ...crypto,
-            name: cryptoName.toUpperCase()
+            name: cryptoName.toUpperCase(),
+            history: []
         }
 
         setCryptos(prev => [...prev, newCrypto])
@@ -74,8 +70,11 @@ const Main = () => {
                 </form>
             </Grid>
             <Container className={classes.contentContainer}>
-                <CryptoCardList cryptos={cryptos} selectCrypto={(selectedCrypto) => setSelectedCrypto(selectedCrypto)}/>
-                {selectedCrypto && <CryptoChart crypto={selectedCrypto}/>}
+                <CryptoCardList
+                    cryptos={cryptos}
+                    selectCrypto={(selectedCrypto) => setSelectedCrypto(selectedCrypto)}
+                />
+                {selectedCrypto && <CryptoChart crypto={selectedCrypto} />}
             </Container>
         </Container>
     )

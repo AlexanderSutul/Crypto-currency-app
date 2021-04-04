@@ -27,6 +27,15 @@ const Main = () => {
     const [inputText, setInputText] = React.useState('')
     const [isLoading, setIsLoading] = React.useState(false)
 
+    const handleHistoryChange = (cryptoName, newHistoryRecord) => {
+        if (history[cryptoName]) {
+            history[cryptoName] = [...history[cryptoName], newHistoryRecord]
+        } else {
+            history[cryptoName] = []
+        }
+        setHistory(history)
+    }
+
     const getNewCrypto = async cryptoName => {
         setIsLoading(true)
 
@@ -43,7 +52,7 @@ const Main = () => {
         const newCrypto = {
             ...crypto,
             name: cryptoName.toUpperCase(),
-            history: []
+            history: [{ eur: crypto.EUR }]
         }
 
         setCryptos(prev => [...prev, newCrypto])

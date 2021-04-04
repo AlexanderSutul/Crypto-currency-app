@@ -1,8 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
+import CryptoApi from "../services/http";
 
-
-const currencies = ['USD', 'EUR']
 const DELAY = 2_000
 const TEND_MAP = Object.freeze({
   DEFAULT: Symbol('default'),
@@ -50,56 +49,45 @@ const StyledCross = styled.div({
 })
 
 const CryptoCard = ({ crypto, onSelect }) => {
-  const { name, USD, EUR } = crypto
+  const { name, EUR } = crypto
 
-  const [USDRate, setUSDRate] = React.useState(USD)
-  const [EURRate, setEURRate] = React.useState(EUR)
-  const [USDDiff, setUSDDiff] = React.useState(0)
-  const [EURDiff, setEURDiff] = React.useState(0)
+  const [rate, setRate] = React.useState(EUR)
+  const [diff, setDiff] = React.useState(0)
   const [tend, setTend] = React.useState(TEND_MAP.DEFAULT)
-  const rateRef = React.useRef()
 
   React.useEffect(() => {
-    const interval = setInterval(async () => {
-      rateRef.current = { usdRate: USDRate, eurRate: EURRate, usdDiff: USDDiff, eurDiff: EURDiff }
-      await updateCrypto()
-    }, DELAY)
+    const interval = setInterval(async () => await updateCrypto(), DELAY)
     return () => clearInterval(interval)
   })
 
   const updateCrypto = async () => {
-    console.log('update crypto', name)
-    const baseUrl = 'https://min-api.cryptocompare.com/data/price'
-    const apiUrl = `${baseUrl}?fsym=${name}&tsyms=${currencies.join(',')}`
     try {
-      const response = await fetch(apiUrl)
-      const { USD: newUSDRate, EUR: newEURRate } = await response.json()
-      setUSDRate(newUSDRate)
-      setEURRate(newEURRate)
-
+      const { EUR: newRate } = await CryptoApi.getRateByCryptoName(name)
       crypto.history = crypto.history.length < 10
-          ? [...crypto.history, { usd: newUSDRate, eur: newEURRate }]
-          : [...crypto.history, { usd: newUSDRate, eur: newEURRate }].slice(-10)
+          ? [...crypto.history, { eur: newRate }]
+          : [...crypto.history, { eur: newRate }].slice(-10)
 
-      if (rateRef.current.USDRate < newUSDRate) {
+      console.log(`EURRate ${rate}, newEURRate ${newRate}`)
+
+      if (rate < newRate) {
         setTend(TEND_MAP.INC)
-        setUSDDiff(`+ ${(newUSDRate - USDRate).toFixed(4)}`)
-        setEURDiff(`+ ${(newEURRate - EURRate).toFixed(4)}`)
-      } else if (USDRate < newUSDRate) {
+        setDiff(`+ ${(newRate - rate).toFixed(4)}`)
+      } else if (rate > newRate) {
         setTend(TEND_MAP.DEC)
-        setUSDDiff(`- ${(USDRate - newUSDRate).toFixed(4)}`)
-        setEURDiff(`- ${(EURRate - newEURRate).toFixed(4)}`)
+        setDiff(`- ${(rate - newRate).toFixed(4)}`)
       } else {
         setTend(TEND_MAP.DEFAULT)
-        setUSDDiff(0)
-        setEURDiff(0)
+        setDiff(0)
       }
+      setRate(newRate)
     } catch (e) {
       alert(JSON.stringify(e))
     }
   }
 
   const handleCrossClick = e => {
+    // add removing
+    // also remove card from localStorage
     e.stopPropagation()
   }
 
@@ -107,8 +95,7 @@ const CryptoCard = ({ crypto, onSelect }) => {
     <StyledCard tend={tend} onClick={onSelect}>
       <StyledCross onclick={{handleCrossClick}} />
       <StyledCryptoTitle>{name}</StyledCryptoTitle>
-      <StyledCurrency>USD: {USDRate} ({USDDiff})</StyledCurrency>
-      <StyledCurrency>EUR: {EURRate} ({EURDiff})</StyledCurrency>
+      <StyledCurrency>EUR: {rate} ({diff})</StyledCurrency>
     </StyledCard>
   )
 }

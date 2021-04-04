@@ -9,7 +9,7 @@ class CryptoApi {
      */
     static getUrl(cryptoName) {
         const base = 'https://min-api.cryptocompare.com'
-        return `${base}/data/price?fsym=${cryptoName}&tsyms=USD,EUR`
+        return `${base}/data/price?fsym=${cryptoName}&tsyms=EUR`
     }
 
     /**

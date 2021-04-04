@@ -15,7 +15,10 @@ const StyledCard = styled.div(({ tend }) => console.log(tend) || ({
   height: '100px',
   borderRadius: '10px',
   boxShadow: '2px 2px 20px -4px rgb(0 0 0 / 75%)',
-  backgroundColor: tend === TEND_MAP.DEFAULT ? 'gainsboro' : tend === TEND_MAP.INC ? 'forestgreen' : tend === TEND_MAP.DEC && 'red',
+  backgroundColor: tend === TEND_MAP.DEFAULT
+      ? 'gainsboro' : tend === TEND_MAP.INC
+          ? 'forestgreen'
+          : tend === TEND_MAP.DEC && 'red',
   marginBottom: '10px',
   cursor: 'pointer',
   padding: '0 15px',
@@ -46,10 +49,9 @@ const CryptoCard = ({ crypto: { name, USD, EUR }, onSelect }) => {
   const [tend, setTend] = React.useState(TEND_MAP.DEFAULT)
 
   React.useEffect(() => {
-    const interval = setInterval(() => {
-      updateCrypto()
+    const interval = setInterval(async () => {
+      await updateCrypto()
     }, DELAY)
-
     return () => clearInterval(interval)
   })
 

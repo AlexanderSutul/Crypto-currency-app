@@ -15,19 +15,20 @@ const StyledCryptoCardList = styled.div({
     padding: '10px 0',
 })
 
-const CryptoCardList = ({cryptos, selectCrypto, updateCryptos}) => {
+const CryptoCardList = ({cryptos, selectCrypto, updateCrypto}) => {
     return (
         <StyledCryptoCardList>
             {cryptos.map(
                 crypto =>
                     <CryptoCard
-                        key={JSON.stringify(crypto)}
+                        key={crypto.name}
                         crypto={crypto}
                         onSelect={() => selectCrypto(crypto)}
+                        updateCrypto={updateCrypto}
                     />
             )}
         </StyledCryptoCardList>
     )
 }
 
-export default React.memo(CryptoCardList)
+export default CryptoCardList

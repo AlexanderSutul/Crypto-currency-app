@@ -1,3 +1,5 @@
+const API_KEY = 'd1b90284df471728448a4d64455124a4eca650d496c4e3ec68053f4ba7c45222'
+
 /**
  * Here is should be a function to send requests to min-api.cryptocompare API
  */
@@ -9,7 +11,9 @@ class CryptoApi {
      */
     static getUrl(cryptoName) {
         const base = 'https://min-api.cryptocompare.com'
-        return `${base}/data/price?fsym=${cryptoName}&tsyms=USD,EUR`
+        const fullUrl = `${base}/data/price?fsym=${cryptoName.toUpperCase()}&tsyms=EUR`
+
+        return `${fullUrl}&api_key=${API_KEY}`
     }
 
     /**

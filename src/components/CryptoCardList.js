@@ -15,9 +15,14 @@ const StyledCryptoCardList = styled.div({
     padding: '10px 0',
 })
 
-const CryptoCardList = ({cryptos, selectCrypto}) => {
+const CryptoCardList = ({cryptos, selectCrypto, updateCryptos}) => {
     const cardList = cryptos.map(
-        crypto => <CryptoCard key={JSON.stringify(crypto)} onSelect={() => selectCrypto(crypto)} crypto={crypto}/>
+        crypto =>
+            <CryptoCard
+                key={JSON.stringify(crypto)}
+                crypto={crypto}
+                onSelect={() => selectCrypto(crypto)}
+            />
     )
 
     return (

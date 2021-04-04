@@ -3,10 +3,10 @@ import styled from 'styled-components'
 
 
 const currencies = ['USD', 'EUR']
-const DELAY = 5000
+const DELAY = 1000
 const TEND_MAP = Object.freeze({
   DEFAULT: Symbol('default'),
-  INC: Symbol('incrising tend'),
+  INC: Symbol('increasing tend'),
   DEC: Symbol('decreasing tend')
 })
 
@@ -40,7 +40,8 @@ const StyledCross = styled.div({
   height: 25
 })
 
-const CryptoCard = ({ crypto: { name, USD, EUR }, onSelect }) => {
+const CryptoCard = ({ crypto, onSelect }) => {
+  const { name, USD, EUR } = crypto
 
   const [USDRate, setUSDRate] = React.useState(USD)
   const [EURRate, setEURRate] = React.useState(EUR)
@@ -64,6 +65,8 @@ const CryptoCard = ({ crypto: { name, USD, EUR }, onSelect }) => {
       setUSDRate(usd)
       setEURRate(eur)
 
+      crypto.history = [...crypto.history, { usd, eur }]
+
       if (USDRate < usd) {
         setTend(TEND_MAP.INC)
         setUSDDiff(`+ ${(usd - USDRate).toFixed(4)}`)
@@ -77,9 +80,8 @@ const CryptoCard = ({ crypto: { name, USD, EUR }, onSelect }) => {
         setUSDDiff(0)
         setEURDiff(0)
       }
-
     } catch (e) {
-      alert(e)
+      alert(JSON.stringify(e))
     }
   }
 
@@ -92,4 +94,4 @@ const CryptoCard = ({ crypto: { name, USD, EUR }, onSelect }) => {
   )
 }
 
-export default React.memo(CryptoCard)
+export default CryptoCard

@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 
 const currencies = ['USD', 'EUR']
-const DELAY = 1000
+const DELAY = 10_000
 const TEND_MAP = Object.freeze({
   DEFAULT: Symbol('default'),
   INC: Symbol('increasing tend'),
@@ -65,7 +65,9 @@ const CryptoCard = ({ crypto, onSelect }) => {
       setUSDRate(usd)
       setEURRate(eur)
 
-      crypto.history = [...crypto.history, { usd, eur }]
+      crypto.history = crypto.history.length < 10
+          ? [...crypto.history, { usd, eur }]
+          : [...crypto.history, { usd, eur }].slice(-10)
 
       if (USDRate < usd) {
         setTend(TEND_MAP.INC)

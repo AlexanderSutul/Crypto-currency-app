@@ -22,13 +22,10 @@ const useStyles = makeStyles((theme) => ({
 const Main = () => {
     const classes = useStyles()
     const [selectedCrypto, setSelectedCrypto] = React.useState(null)
+    const [history, setHistory] = React.useState({})
     const [cryptos, setCryptos] = React.useState([])
     const [inputText, setInputText] = React.useState('')
     const [isLoading, setIsLoading] = React.useState(false)
-
-    const updateCryptos = () => {
-        setCryptos(cryptos)
-    }
 
     const getNewCrypto = async cryptoName => {
         setIsLoading(true)
@@ -77,7 +74,7 @@ const Main = () => {
                     cryptos={cryptos}
                     selectCrypto={(selectedCrypto) => setSelectedCrypto(selectedCrypto)}
                 />
-                {selectedCrypto && <CryptoChart crypto={selectedCrypto}/>}
+                {selectedCrypto && <CryptoChart crypto={selectedCrypto} />}
             </Container>
         </Container>
     )

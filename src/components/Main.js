@@ -4,6 +4,7 @@ import {makeStyles} from '@material-ui/core/styles'
 import CryptoCardList from './CryptoCardList'
 import CryptoChart from './CryptoChart'
 import CryptoApi from "../services/http";
+import {TEND_MAP} from "../constants";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -22,7 +23,6 @@ const useStyles = makeStyles((theme) => ({
 const Main = () => {
     const classes = useStyles()
     const [selectedCrypto, setSelectedCrypto] = React.useState(null)
-    const [history, setHistory] = React.useState({})
     const [cryptos, setCryptos] = React.useState([])
     const [inputText, setInputText] = React.useState('')
     const [isLoading, setIsLoading] = React.useState(false)
@@ -50,14 +50,24 @@ const Main = () => {
         if (crypto.Response === 'Error') return setIsLoading(false)
 
         const newCrypto = {
-            ...crypto,
-            name: cryptoName.toUpperCase(),
-            history: [{ eur: crypto.EUR }]
+            name: cryptoName,
+            price: crypto.EUR,
+            history: [],
+            tend: TEND_MAP.DEFAULT,
+            diff: 0
         }
 
-        setCryptos(prev => [...prev, newCrypto])
+        setCryptos(prevState => [...prevState, newCrypto])
         setIsLoading(false)
         setInputText('')
+    }
+
+    const addUpdatedCryptoToState = (updatedCrypto) => {
+        console.log('cryptos', cryptos)
+        const cryptoToUpdateIdx = cryptos.findIndex(it => it.name === updatedCrypto.name)
+        console.log('cryptoToUpdateIdx', cryptoToUpdateIdx)
+        cryptos[cryptoToUpdateIdx] = updatedCrypto
+        setCryptos([...cryptos])
     }
 
     const handleSubmit = e => {
@@ -82,8 +92,10 @@ const Main = () => {
                 <CryptoCardList
                     cryptos={cryptos}
                     selectCrypto={(selectedCrypto) => setSelectedCrypto(selectedCrypto)}
+                    updateCrypto={addUpdatedCryptoToState}
                 />
-                {selectedCrypto && <CryptoChart crypto={selectedCrypto} />}
+                {selectedCrypto
+                && <CryptoChart selectedCrypto={cryptos[cryptos.findIndex(it => it.name === selectedCrypto.name)]}/>}
             </Container>
         </Container>
     )

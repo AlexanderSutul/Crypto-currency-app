@@ -18,7 +18,7 @@ const StyledCryptoCardList = styled.div({
 const CryptoCardList = ({cryptos, selectCrypto, updateCrypto}) => {
     return (
         <StyledCryptoCardList>
-            {cryptos.map(
+            {cryptos && cryptos.map(
                 crypto =>
                     <CryptoCard
                         key={crypto.name}

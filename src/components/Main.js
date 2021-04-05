@@ -34,11 +34,10 @@ const Main = () => {
 
     const getNewCrypto = async cryptoName => {
         setIsLoading(true)
-
         if (
             !cryptoName ||
             !cryptoName.length ||
-            cryptos.find(crypto => crypto.name.toUpperCase() === cryptoName.toUpperCase())
+            cryptos?.find(crypto => crypto.name.toUpperCase() === cryptoName.toUpperCase())
         ) return setIsLoading(false)
 
         const crypto = await CryptoApi.getRateByCryptoName(cryptoName)
@@ -53,7 +52,7 @@ const Main = () => {
             diff: 0
         }
 
-        setCryptos(prevState => [...prevState, newCrypto])
+        setCryptos(prevState => [...prevState || [], newCrypto])
         LocalStorageManager.set('history', cryptos)
         setIsLoading(false)
         setInputText('')

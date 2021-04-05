@@ -1,10 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Paper } from '@material-ui/core'
+import {Paper} from '@material-ui/core'
 import {TEND_MAP} from '../constants'
 import CryptoApi from "../services/http";
 
-const DELAY = 10_000
+const DELAY = 2_000
 
 const StyledCard = styled(Paper)(({tend}) => ({
     width: '45%',
@@ -47,7 +47,12 @@ const CryptoCard = ({crypto, onSelect, updateCrypto}) => {
                     updatedCrypto.tend = TEND_MAP.DEFAULT
                     updatedCrypto.diff = 0
                 }
-                updatedCrypto.history = [...updatedCrypto.history, {eur: newPrice}]
+                if (updatedCrypto.history.length < 10) {
+                    updatedCrypto.history.push({eur: newPrice})
+                } else {
+                    updatedCrypto.history.shift()
+                    updatedCrypto.history.push({eur: newPrice})
+                }
                 updateCrypto(updatedCrypto)
             } catch (e) {
                 console.error(e)

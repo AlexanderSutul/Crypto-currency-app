@@ -5,6 +5,7 @@ import CryptoCardList from './CryptoCardList'
 import CryptoChart from './CryptoChart'
 import CryptoApi from "../services/http";
 import {TEND_MAP} from "../constants";
+import LocalStorageManager from "../services/localStorage";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -27,14 +28,9 @@ const Main = () => {
     const [inputText, setInputText] = React.useState('')
     const [isLoading, setIsLoading] = React.useState(false)
 
-    const handleHistoryChange = (cryptoName, newHistoryRecord) => {
-        if (history[cryptoName]) {
-            history[cryptoName] = [...history[cryptoName], newHistoryRecord]
-        } else {
-            history[cryptoName] = []
-        }
-        setHistory(history)
-    }
+    React.useEffect(() => {
+        setCryptos(LocalStorageManager.get('history'))
+    }, [])
 
     const getNewCrypto = async cryptoName => {
         setIsLoading(true)
@@ -58,6 +54,7 @@ const Main = () => {
         }
 
         setCryptos(prevState => [...prevState, newCrypto])
+        LocalStorageManager.set('history', cryptos)
         setIsLoading(false)
         setInputText('')
     }
@@ -67,7 +64,9 @@ const Main = () => {
         const cryptoToUpdateIdx = cryptos.findIndex(it => it.name === updatedCrypto.name)
         console.log('cryptoToUpdateIdx', cryptoToUpdateIdx)
         cryptos[cryptoToUpdateIdx] = updatedCrypto
-        setCryptos([...cryptos])
+        const updatedCryptos = [...cryptos]
+        LocalStorageManager.set('history', updatedCryptos)
+        setCryptos(updatedCryptos)
     }
 
     const handleSubmit = e => {

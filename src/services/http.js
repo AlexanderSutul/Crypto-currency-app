@@ -12,7 +12,6 @@ class CryptoApi {
     static getUrl(cryptoName) {
         const base = 'https://min-api.cryptocompare.com'
         const fullUrl = `${base}/data/price?fsym=${cryptoName.toUpperCase()}&tsyms=EUR`
-
         return `${fullUrl}&api_key=${API_KEY}`
     }
 

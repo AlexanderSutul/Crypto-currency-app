@@ -10,9 +10,12 @@ class CryptoApi {
    * @param cryptoName
    * @returns {string}
    */
-  static getUrl(cryptoName) {
+  static getUrl(listOfCryproCurrencies, listOfCurrencies) {
     const base = "https://min-api.cryptocompare.com"
-    const fullUrl = `${base}/data/price?fsym=${cryptoName.toUpperCase()}&tsyms=EUR`
+    const mainURL = `${base}/data/price?`
+    const fSym = `fsym=${listOfCryproCurrencies.map(el => el.toUpperCase()).join(",")}`
+    const tSym = `tsyms=${listOfCurrencies.map(el => el.toUpperCase()).join(",")}`
+    const fullUrl = `${mainURL}${fSym}&${tSym}`
     return `${fullUrl}&api_key=${API_KEY}`
   }
 

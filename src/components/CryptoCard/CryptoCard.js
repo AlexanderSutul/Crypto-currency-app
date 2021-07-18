@@ -1,34 +1,11 @@
-import React from "react"
-import styled from "styled-components"
-import { Paper } from "@material-ui/core"
-import { TEND_MAP } from "../constants"
-import CryptoApi from "../services/http"
-
-const DELAY = 2_000
-
-const StyledCard = styled(Paper)(({ tend }) => ({
-  width: "45%",
-  height: "100px",
-  backgroundColor:
-    tend && tend === TEND_MAP.DEFAULT
-      ? "#ffcd38"
-      : tend === TEND_MAP.INC
-      ? "#00e676"
-      : tend === TEND_MAP.DEC && "#ff1744",
-  marginBottom: "10px",
-  cursor: "pointer",
-  padding: "0 15px",
-  position: "relative",
-}))
-const StyledCryptoTitle = styled.div({
-  fontSize: 21,
-  borderBottom: "2px solid black",
-  marginBottom: 10,
-  textTransform: "uppercase",
-})
-const StyledCurrency = styled.div({
-  fontSize: 15,
-})
+import React from 'react'
+import { TEND_MAP, DELAY } from '../../constants'
+import CryptoApi from '../../services/http'
+import {
+  StyledCurrency,
+  StyledCryptoTitle,
+  StyledCard,
+} from './CryptoCard.styled'
 
 const CryptoCard = ({ crypto, onSelect, updateCrypto }) => {
   const { price, diff, tend, name } = crypto

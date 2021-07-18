@@ -1,4 +1,4 @@
-export const normalize = (array) => {
+export const normalize = array => {
   const normalizedArray = []
   if (!array || !array.length) return normalizedArray
 

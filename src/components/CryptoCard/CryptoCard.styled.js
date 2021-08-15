@@ -21,6 +21,9 @@ export const StyledCard = styled(Paper)(({ tend }) => ({
   cursor: 'pointer',
   padding: '0 15px',
   position: 'relative',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'space-evenly'
 }))
 
 export const StyledCryptoTitle = styled.div({
@@ -28,8 +31,10 @@ export const StyledCryptoTitle = styled.div({
   borderBottom: '2px solid black',
   marginBottom: 10,
   textTransform: 'uppercase',
+  textAlign: 'center'
 })
 
 export const StyledCurrency = styled.div({
   fontSize: 15,
+  textAlign: 'center'
 })

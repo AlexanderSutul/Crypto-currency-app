@@ -1,31 +1,16 @@
 import React, { useState, useEffect } from 'react'
 import { Container, Grid, TextField, Button } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
 import CryptoCardList from '../CryptoCardList/CryptoCardList'
 import CryptoChart from '../CryptoChart/CryptoChart'
 import CryptoApi from '../../services/http'
 import { TEND_MAP } from '../../constants'
 import LocalStorageManager from '../../services/localStorage'
 import Header from '../Header/Header'
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    '& > *': {
-      margin: theme.spacing(1),
-      width: '25ch',
-    },
-  },
-  contentContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    flex: '0 0 50%',
-  },
-}))
+import SearchField from '../SearchField/SearchField'
 
 const HISTORY_KEY = 'history'
 
 const Main = () => {
-  const classes = useStyles()
   const [selectedCrypto, setSelectedCrypto] = useState(null)
   const [cryptos, setCryptos] = useState([])
   const [inputText, setInputText] = useState('')
@@ -83,39 +68,48 @@ const Main = () => {
   return (
     <Container>
       <Header title="Crypto-app" />
-      <Grid>
-        <form
-          className={classes.root}
-          noValidate
-          autoComplete="off"
-          onSubmit={handleSubmit}
+      <Container 
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'center',
+          paddingTop: 50
+        }}
+      >
+        <Container
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+          }}
         >
-          <TextField
-            variant={'outlined'}
-            id="standard-basic"
-            label="Start typing here"
-            value={inputText}
-            onChange={e => setInputText(e.target.value)}
+          <SearchField
+            onSubmit={handleSubmit}
+            onChangeText={setInputText}
+            isLoading={isLoading}
+            text={inputText}
           />
-          <br />
-          <Button color="primary" type={'submit'} disabled={isLoading}>
-            Find Crypto
-          </Button>
-        </form>
-      </Grid>
-      <Container className={classes.contentContainer}>
-        <CryptoCardList
-          cryptos={cryptos}
-          selectCrypto={selectedCrypto => setSelectedCrypto(selectedCrypto)}
-          updateCrypto={addUpdatedCryptoToState}
-        />
-        {selectedCrypto && (
-          <CryptoChart
-            selectedCrypto={
-              cryptos[cryptos.findIndex(it => it.name === selectedCrypto.name)]
-            }
+        </Container>
+        <Container
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+          }}
+        >
+          <CryptoCardList
+            cryptos={cryptos}
+            selectCrypto={selectedCrypto => setSelectedCrypto(selectedCrypto)}
+            updateCrypto={addUpdatedCryptoToState}
           />
-        )}
+          {selectedCrypto && (
+            <CryptoChart
+              selectedCrypto={
+                cryptos[
+                  cryptos.findIndex(it => it.name === selectedCrypto.name)
+                ]
+              }
+            />
+          )}
+        </Container>
       </Container>
     </Container>
   )

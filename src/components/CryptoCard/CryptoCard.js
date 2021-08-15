@@ -14,7 +14,10 @@ const CryptoCard = ({ crypto, onSelect, updateCrypto }) => {
     const interval = setInterval(async () => {
       const updatedCrypto = { ...crypto }
       try {
-        const { EUR: newPrice } = await CryptoApi.getRateByCryptoName([crypto], ['EUR'])
+        const { EUR: newPrice } = await CryptoApi.getRateByCryptoName(
+          [crypto],
+          ['EUR']
+        )
         updatedCrypto.price = newPrice
         if (price < newPrice) {
           updatedCrypto.tend = TEND_MAP.INC

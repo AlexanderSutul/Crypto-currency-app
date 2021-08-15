@@ -12,10 +12,10 @@ class CryptoApi {
    * @param cryptoName
    * @returns {string}
    */
-  static getUrl(listOfCryproCurrencies, listOfCurrencies) {
+  static getUrl(listOfCryptoCurrencies, listOfCurrencies) {
     const base = 'https://min-api.cryptocompare.com'
     const mainURL = `${base}/data/price?`
-    const fSym = `fsym=${listOfCryproCurrencies.map(capitalize).join(',')}`
+    const fSym = `fsym=${listOfCryptoCurrencies.map(capitalize).join(',')}`
     const tSym = `tsyms=${listOfCurrencies.map(capitalize).join(',')}`
     const fullUrl = `${mainURL}${fSym}&${tSym}`
     return `${fullUrl}&api_key=${API_KEY}`
@@ -23,11 +23,12 @@ class CryptoApi {
 
   /**
    * Returns data for selected cryptos
-   * @param name
+   * @param listOfCryptoCurrencies
+   * @param listOfCurrencies
    * @returns {Promise<any>}
    */
-  static async getRateByCryptoName(name) {
-    const apiLink = this.getUrl(name)
+  static async getRateByCryptoName(listOfCryptoCurrencies, listOfCurrencies) {
+    const apiLink = this.getUrl(listOfCryptoCurrencies, listOfCurrencies)
     const response = await fetch(apiLink)
     return await response.json()
   }

@@ -6,6 +6,7 @@ import CryptoChart from '../CryptoChart/CryptoChart'
 import CryptoApi from '../../services/http'
 import { TEND_MAP } from '../../constants'
 import LocalStorageManager from '../../services/localStorage'
+import Header from '../Header/Header'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -45,7 +46,7 @@ const Main = () => {
     )
       return setIsLoading(false)
 
-    const crypto = await CryptoApi.getRateByCryptoName(cryptoName)
+    const crypto = await CryptoApi.getRateByCryptoName([cryptoName], ['EUR'])
 
     if (crypto.Response === 'Error') return setIsLoading(false)
 
@@ -64,7 +65,6 @@ const Main = () => {
   }
 
   const addUpdatedCryptoToState = updatedCrypto => {
-    console.log('cryptos', cryptos)
     const cryptoToUpdateIdx = cryptos.findIndex(
       cr => cr.name === updatedCrypto.name
     )
@@ -82,7 +82,7 @@ const Main = () => {
 
   return (
     <Container>
-      <h1>Crypto-app</h1>
+      <Header title="Crypto-app" />
       <Grid>
         <form
           className={classes.root}

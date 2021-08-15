@@ -1,5 +1,5 @@
 import React from 'react'
-import { normalize } from '../services/normalization'
+import { normalize } from '../../utils'
 import { Container, Grid, Paper, Typography } from '@material-ui/core'
 
 const Chart = ({ history }) => {

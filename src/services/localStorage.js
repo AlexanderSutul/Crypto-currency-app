@@ -5,10 +5,10 @@ class LocalStorageManager {
   /**
    * Save data to LocalStorage by key
    * @param key
-   * @param data
+   * @param dataObject
    */
-  static set(key, data) {
-    localStorage.setItem(key, JSON.stringify(data))
+  static set(key, dataObject) {
+    localStorage.setItem(key, JSON.stringify(dataObject))
   }
 
   /**
@@ -17,8 +17,7 @@ class LocalStorageManager {
    * @returns {any}
    */
   static get(key) {
-    const data = localStorage.getItem(key)
-    return JSON.parse(data)
+    return JSON.parse(localStorage.getItem(key))
   }
 }
 

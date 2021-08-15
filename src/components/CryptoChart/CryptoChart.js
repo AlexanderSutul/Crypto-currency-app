@@ -1,5 +1,5 @@
 import React from 'react'
-import Chart from './Chart'
+import Chart from '../Chart/Chart'
 
 const CryptoChart = ({ selectedCrypto: { name, history } }) => {
   return (

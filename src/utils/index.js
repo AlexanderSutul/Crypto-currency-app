@@ -1,4 +1,4 @@
-export const capitalize = word => word.toUppedCase()
+export const capitalize = word => word.toUpperCase()
 export const normalize = array => {
   const normalizedArray = []
   if (!array || !array.length) return normalizedArray

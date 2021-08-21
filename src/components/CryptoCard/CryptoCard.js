@@ -14,8 +14,8 @@ const CryptoCard = ({ crypto, onSelect, updateCrypto }) => {
     const interval = setInterval(async () => {
       const updatedCrypto = { ...crypto }
       try {
-        const { EUR: newPrice } = await CryptoApi.getRateByCryptoName(
-          [crypto],
+        const { EUR: newPrice } = await CryptoApi.getRate(
+          [crypto?.name],
           ['EUR']
         )
         updatedCrypto.price = newPrice

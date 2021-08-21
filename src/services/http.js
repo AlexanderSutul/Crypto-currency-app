@@ -1,4 +1,4 @@
-import { capitalize } from '@material-ui/core'
+import { capitalize } from '../utils'
 
 const API_KEY =
   'd1b90284df471728448a4d64455124a4eca650d496c4e3ec68053f4ba7c45222'
@@ -15,10 +15,11 @@ class CryptoApi {
   static getUrl(listOfCryptoCurrencies, listOfCurrencies) {
     const base = 'https://min-api.cryptocompare.com'
     const mainURL = `${base}/data/price?`
-    const fSym = `fsym=${listOfCryptoCurrencies.map(capitalize).join(',')}`
-    const tSym = `tsyms=${listOfCurrencies.map(capitalize).join(',')}`
+    const fSym = `fsym=${listOfCryptoCurrencies.map(val => val.toUpperCase()).join(',')}`
+    const tSym = `tsyms=${listOfCurrencies.map(val => val.toUpperCase()).join(',')}`
     const fullUrl = `${mainURL}${fSym}&${tSym}`
-    return `${fullUrl}&api_key=${API_KEY}`
+    const apiKey = `api_key=${API_KEY}`
+    return `${fullUrl}&${apiKey}`
   }
 
   /**
@@ -27,7 +28,7 @@ class CryptoApi {
    * @param listOfCurrencies
    * @returns {Promise<any>}
    */
-  static async getRateByCryptoName(listOfCryptoCurrencies, listOfCurrencies) {
+  static async getRate(listOfCryptoCurrencies, listOfCurrencies) {
     const apiLink = this.getUrl(listOfCryptoCurrencies, listOfCurrencies)
     const response = await fetch(apiLink)
     return await response.json()

@@ -4,4 +4,4 @@ export const TEND_MAP = Object.freeze({
   DEC: Symbol('decreasing'),
 })
 
-export const DELAY = 2_000
+export const DELAY = 15_000

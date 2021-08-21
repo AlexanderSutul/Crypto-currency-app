@@ -31,7 +31,7 @@ const Main = () => {
     )
       return setIsLoading(false)
 
-    const crypto = await CryptoApi.getRateByCryptoName([cryptoName], ['EUR'])
+    const crypto = await CryptoApi.getRate([cryptoName], ['EUR'])
 
     if (crypto.Response === 'Error') return setIsLoading(false)
 
@@ -53,7 +53,6 @@ const Main = () => {
     const cryptoToUpdateIdx = cryptos.findIndex(
       cr => cr.name === updatedCrypto.name
     )
-    console.log('cryptoToUpdateIdx', cryptoToUpdateIdx)
     cryptos[cryptoToUpdateIdx] = updatedCrypto
     const updatedCryptos = [...cryptos]
     LocalStorageManager.set(HISTORY_KEY, updatedCryptos)

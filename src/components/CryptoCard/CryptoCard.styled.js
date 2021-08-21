@@ -3,7 +3,7 @@ import { TEND_MAP } from '../../constants'
 import { Paper } from '@material-ui/core'
 
 const getTendColor = tend => {
-  switch (tend) {
+  switch (tend?.description) {
     case TEND_MAP.INC:
       return '#00e676'
     case TEND_MAP.DEC:

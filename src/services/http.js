@@ -9,7 +9,8 @@ const API_KEY =
 class CryptoApi {
   /**
    * Returns the url for crypto api
-   * @param cryptoName
+   * @param listOfCryptoCurrencies
+   * @param listOfCurrencies
    * @returns {string}
    */
   static getUrl(listOfCryptoCurrencies, listOfCurrencies) {

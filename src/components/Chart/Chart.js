@@ -3,9 +3,8 @@ import { normalize } from '../../utils'
 import { Container, Grid, Paper, Typography } from '@material-ui/core'
 
 const Chart = ({ history }) => {
-  // TODO: Finish it!
-  // const [max, setMax] = React.useState(Math.max(...history))
-  // const [min, setMin] = React.useState(Math.min(...history))
+
+  // store max and min, todo something here with chart bars...
 
   const normalizedHistory = normalize(history?.map(hist => hist?.eur))
 

@@ -70,8 +70,8 @@ const Main = () => {
       <Container 
         style={{
           display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'center',
+          flexDirection: 'column',
+          justifyContent: 'flex-start',
           paddingTop: 50
         }}
       >
@@ -97,7 +97,7 @@ const Main = () => {
           <CryptoCardList
             cryptos={cryptos}
             selectCrypto={selectedCrypto => setSelectedCrypto(selectedCrypto)}
-            updateCrypto={addUpdatedCryptoToState}
+            onUpdateCrypto={addUpdatedCryptoToState}
           />
           {selectedCrypto && (
             <CryptoChart

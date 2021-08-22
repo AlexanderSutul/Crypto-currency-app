@@ -7,8 +7,20 @@ import {
   StyledCard,
 } from './CryptoCard.styled'
 
-const CryptoCard = ({ crypto, onSelect, updateCrypto }) => {
-  const { price, diff, tend, name } = crypto
+const CryptoCard = ({ crypto, onSelect, onUpdateCrypto }) => {
+  const { price, diff, name } = crypto
+  const [tendColor, setTendColor] = React.useState()
+  
+  const getTendColor = React.useCallback(tend => {
+    switch (tend) {
+      case TEND_MAP.INC:
+        return '#00e676'
+      case TEND_MAP.DEC:
+        return '#ff1744'
+      default:
+        return '#ffcd38'
+    }
+  }, [])
 
   React.useEffect(() => {
     const interval = setInterval(async () => {
@@ -18,7 +30,9 @@ const CryptoCard = ({ crypto, onSelect, updateCrypto }) => {
           [crypto?.name],
           ['EUR']
         )
+
         updatedCrypto.price = newPrice
+
         if (price < newPrice) {
           updatedCrypto.tend = TEND_MAP.INC
           updatedCrypto.diff = `+ ${(newPrice - price).toFixed(4)}`
@@ -29,13 +43,16 @@ const CryptoCard = ({ crypto, onSelect, updateCrypto }) => {
           updatedCrypto.tend = TEND_MAP.DEFAULT
           updatedCrypto.diff = 0
         }
+
         if (updatedCrypto.history.length < 10) {
           updatedCrypto.history.push({ eur: newPrice })
         } else {
           updatedCrypto.history.shift()
           updatedCrypto.history.push({ eur: newPrice })
         }
-        updateCrypto(updatedCrypto)
+
+        setTendColor(updatedCrypto.tend)
+        onUpdateCrypto(updatedCrypto)
       } catch (e) {
         console.error(e)
       }
@@ -44,7 +61,7 @@ const CryptoCard = ({ crypto, onSelect, updateCrypto }) => {
   })
 
   return (
-    <StyledCard tend={tend} onClick={onSelect}>
+    <StyledCard tend={getTendColor(tendColor)} onClick={onSelect}>
       <StyledCryptoTitle>{name}</StyledCryptoTitle>
       <StyledCurrency>
         EUR: {price} ({diff})

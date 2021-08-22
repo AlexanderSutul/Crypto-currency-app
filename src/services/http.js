@@ -15,8 +15,8 @@ class CryptoApi {
   static getUrl(listOfCryptoCurrencies, listOfCurrencies) {
     const base = 'https://min-api.cryptocompare.com'
     const mainURL = `${base}/data/price?`
-    const fSym = `fsym=${listOfCryptoCurrencies.map(val => val.toUpperCase()).join(',')}`
-    const tSym = `tsyms=${listOfCurrencies.map(val => val.toUpperCase()).join(',')}`
+    const fSym = `fsym=${listOfCryptoCurrencies.map(capitalize).join(',')}`
+    const tSym = `tsyms=${listOfCurrencies.map(capitalize).join(',')}`
     const fullUrl = `${mainURL}${fSym}&${tSym}`
     const apiKey = `api_key=${API_KEY}`
     return `${fullUrl}&${apiKey}`
